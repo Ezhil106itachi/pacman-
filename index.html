@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacman</title>
+    <style>
+        #container{
+            width:850px;
+            height: 450px;
+            
+            background-color: rgb(53, 31, 255);
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+<button onclick="create()">Add Pacman</button>
+<button onclick="move_pac()">Start Game</button>
+<div id="container"></div>
+<script>
+    var pacman = [];
+    var x_pos = [];
+    var y_pos = [];
+    var x_vel = [];
+    var y_vel = [];
+    var gravity = 1;
+    var container=document.getElementById("container");
+    function create() {
+        var pac = document.createElement("img");
+        pac.src = "./images/PacMan1.png";
+        var xpos = Math.random() * 750; 
+        var ypos = Math.random() * 350; 
+        var xvel = Math.floor(Math.random() * 20) ; 
+        var yvel = Math.floor(Math.random() * 20) ; 
+        pac.style.width = 50 + 'px';
+        pac.style.left = xpos + 'px';
+        pac.style.top = ypos + 'px';
+        pac.style.position = "absolute";
+        pacman.push(pac);
+        x_pos.push(xpos);
+        y_pos.push(ypos);
+        x_vel.push(xvel);
+        y_vel.push(yvel);
+        container.appendChild(pac);
+    }
+    function move_pac() {
+        for (let i = 0; i < pacman.length; i++) {
+            x_pos[i] += x_vel[i];
+            y_pos[i] += y_vel[i];
+            if (x_vel[i]>0) {
+                if (Math.floor(x_pos[i]/x_vel[i]) %2!== 0) {
+                    pacman[i].src ="./images/PacMan2.png";
+                } else {
+                    pacman[i].src ="./images/PacMan1.png";
+                }
+            } else {
+                if (Math.floor(x_pos[i]/x_vel[i])%2!==0) {
+                    pacman[i].src = "./images/PacMan4.png";
+                } else {
+                    pacman[i].src ="./images/PacMan3.png";
+                }
+            }
+            
+            if (x_pos[i] <= 50 || x_pos[i] >= 820) {
+                x_vel[i] = -x_vel[i] * gravity;
+            }
+            if (y_pos[i] <= 70 || y_pos[i] >= 430) {
+                y_vel[i] = -y_vel[i] * gravity;
+            }
+            pacman[i].style.left = x_pos[i] + 'px';
+            pacman[i].style.top = y_pos[i] + 'px';
+        }
+      setTimeout(move_pac, 100);
+    }
+    
+    </script>
+</body>
+</html>
+
